@@ -4,7 +4,7 @@ pragma solidity ^0.8.9;
 
 contract FakeNFTMarketplace
 {
-    mapping (uint256 => address) tokens;
+    mapping (uint256 => address) public tokens;
     uint256 nftPrice = 0.1 ether;
     function purchase(uint256 _tokenId)  external payable
     {
