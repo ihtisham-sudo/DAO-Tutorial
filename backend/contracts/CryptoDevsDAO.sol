@@ -24,5 +24,18 @@ contract CryptoDevsDAO is Ownable {
         bool executed;
         mapping (uint256 => bool) voters;
     }
+    mapping (uint256 => Proposal) public proposals;
+    uint256 public numProposals;
+    IFakeNFTMarketplace nftMarketplace;
+    ICryptoDevsNFT cryptoDevsNFT;
+    constructor (address _nftMarketplace, address _cryptoDevsNFT ) payable {
+        nftMarketplace = IFakeNFTMarketplace (_nftMarketplace);
+        cryptoDevsNFT = ICryptoDevsNFT (_cryptoDevsNFT);
+    }
+    modifier nftHolderOnly {
+        require(cryptoDevsNFT.balanceOf(msg.sender) > 0, "Not A Dao Memver");
+        _;
+    }
     
+
 }
