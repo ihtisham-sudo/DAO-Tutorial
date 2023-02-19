@@ -1,4 +1,5 @@
 const hre = require("hardhat");
+const { CRYPTODEVS_NFT_CONTRACT_ADDRESS } = require("../constants");
 
 //* How to change this file
 /*
@@ -28,7 +29,28 @@ ex : Asssume you have a string and a number to pass
 */
 
 async function main() {
-  // Write your deployment files here
+  const FakeNFTMarketplace = await ethers.getContractFactory(
+    "FakeNFTMarketplace"
+  );
+  const fakeNftMarketplace = await FakeNFTMarketplace.deploy();
+  await fakeNftMarketplace.deployed();
+
+  console.log("FakeNFTMarketplace deployed to: ", fakeNftMarketplace.address);
+
+  // Now deploy the CryptoDevsDAO contract
+  const CryptoDevsDAO = await ethers.getContractFactory("CryptoDevsDAO");
+  const cryptoDevsDAO = await CryptoDevsDAO.deploy(
+    fakeNftMarketplace.address,
+    CRYPTODEVS_NFT_CONTRACT_ADDRESS,
+    {
+      // This assumes your metamask account has at least 1 ETH in its account
+      // Change this value as you want
+      value: ethers.utils.parseEther("1"),
+    }
+  );
+  await cryptoDevsDAO.deployed();
+
+  console.log("CryptoDevsDAO deployed to: ", cryptoDevsDAO.address);
 }
 
 // Async Sleep function
