@@ -106,7 +106,6 @@ contract CryptoDevsDAO is Ownable {
         require(amount > 0, "NOTHING TO WITHDRAW");
         payable(owner()).transfer(amount);
     }
-
-    
-
+    receive() external payable{}
+    fallback() external payable{}
 }
