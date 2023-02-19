@@ -89,7 +89,23 @@ contract CryptoDevsDAO is Ownable {
         );
         _;
     }
-
+    function executeProposal(uint256 proposalIndex) external nftHolderOnly inactiveProposalOnly(proposalIndex)
+    {
+        Proposal storage proposal = proposals[proposalIndex];
+        if(proposal.yayvotes > proposal.nayvotes)
+        {
+            uint256 nftPrice = nftMarketplace.getPrice();
+            require(address(this).balance>=nftPrice, "NOT ENOUGH FUNDS");
+            nftMarketplace.purchase{value: nftPrice}(proposal.nftTokenId);
+        }
+        proposal.executed = true;
+    }
+    function withdrawEther() external onlyOwner 
+    {
+        uint256 amount = address(this).balance;
+        require(amount > 0, "NOTHING TO WITHDRAW");
+        payable(owner()).transfer(amount);
+    }
 
     
 
