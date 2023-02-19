@@ -52,9 +52,13 @@ contract CryptoDevsDAO is Ownable {
             proposals[proposalIndex].deadline > block.timestamp,
             "DEADLINE EXCEEDED"
         );
-        _;
-        
+        _;  
     }
+    enum Vote{
+        YAY,
+        NAY
+    }
+    
     
 
 }
